@@ -429,13 +429,28 @@ def build_xlsx(data: dict, shipping: int) -> bytes:
 def check_password() -> bool:
     if st.session_state.get("authenticated"):
         return True
-    pwd = st.text_input("Enter password to continue", type="password", key="pwd_input")
-    if pwd:
-        if pwd == st.secrets.get("APP_PASSWORD", ""):
-            st.session_state["authenticated"] = True
-            st.rerun()
-        else:
-            st.error("Incorrect password.")
+
+    st.markdown("""
+    <div style="max-width:400px; margin: 8rem auto; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🌿</div>
+      <h2 style="font-family:'DM Serif Display',serif; color:#1f5c2e; margin-bottom:0.25rem;">
+        Order Sheet Generator
+      </h2>
+      <p style="color:#888; margin-bottom:2rem; font-size:0.95rem;">
+        Chhajed Garden · Sanjay Nursery
+      </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col = st.columns([1, 2, 1])[1]
+    with col:
+        pwd = st.text_input("Password", type="password", placeholder="Enter password…", label_visibility="collapsed")
+        if pwd:
+            if pwd == st.secrets.get("APP_PASSWORD", ""):
+                st.session_state["authenticated"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect password.")
     return False
 
 if not check_password():
