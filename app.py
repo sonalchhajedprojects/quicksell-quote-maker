@@ -424,6 +424,23 @@ def build_xlsx(data: dict, shipping: int) -> bytes:
     return out.read()
 
 
+# ── Auth ─────────────────────────────────────────────────────────────────────
+
+def check_password() -> bool:
+    if st.session_state.get("authenticated"):
+        return True
+    pwd = st.text_input("Enter password to continue", type="password", key="pwd_input")
+    if pwd:
+        if pwd == st.secrets.get("APP_PASSWORD", ""):
+            st.session_state["authenticated"] = True
+            st.rerun()
+        else:
+            st.error("Incorrect password.")
+    return False
+
+if not check_password():
+    st.stop()
+
 # ── UI ────────────────────────────────────────────────────────────────────────
 
 st.markdown("""
